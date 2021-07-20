@@ -2,10 +2,11 @@
  * 
  */
 package com.smoothstack.javabasics.day1;
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
- * @author joshu
+ * @author Joshua Green
  *
  */
 public class Assignment2 {
@@ -24,7 +25,7 @@ public class Assignment2 {
 		while(guesses < 5) {
 			guess = reader.nextInt();
 			if(guess >= myVal - 10 && guess <= myVal + 10) {
-				System.out.println("Close enough, my number was " + String.valueOf(myVal) + ".");
+				System.out.println("Close enough, my number was " + myVal + ".");
 				reader.close();
 				return;
 			}
@@ -33,9 +34,8 @@ public class Assignment2 {
 				System.out.println("Too far, keep guessing!");
 			}
 		}
-		System.out.println("Too many guesses, my number was " + String.valueOf(myVal) + ".");
+		System.out.println("Too many guesses, my number was " + myVal + ".");
 		reader.close();
 		return;
 	}
-
 }
