@@ -14,7 +14,7 @@ public class Assignment2 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// Generate a random number, then use while loop to get user input
 		Random rand = new Random();
 		Scanner reader = new Scanner(System.in);
 		int myVal = rand.nextInt(100) + 1;
