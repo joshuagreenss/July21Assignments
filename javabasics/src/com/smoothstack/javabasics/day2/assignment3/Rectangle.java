@@ -43,9 +43,16 @@ public class Rectangle implements Shape {
 	 */
 	public static void main(String[] args) {
 		// Builds rectangle from command line inputs
-		Rectangle r = new Rectangle(Integer.valueOf(args[0]),Integer.valueOf(args[1]));
-		System.out.println("The area of the rectangle is " + r.calculateArea());
-		r.display();
+		try {
+			Rectangle r = new Rectangle(Integer.valueOf(args[0]),Integer.valueOf(args[1]));
+			System.out.println("The area of the rectangle is " + r.calculateArea());
+			r.display();
+		} catch(NumberFormatException e){
+			System.out.println("At least one input is not an integer");
+			return;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Not enough inputs");
+			return;
+		}
 	}
-
 }

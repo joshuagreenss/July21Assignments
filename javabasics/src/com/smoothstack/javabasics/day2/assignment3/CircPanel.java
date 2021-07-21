@@ -17,7 +17,7 @@ public class CircPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawOval(cx,cy,r,r);
+		g.drawOval(cx,cy,r*2,r*2);
 	}
 
 	@Override

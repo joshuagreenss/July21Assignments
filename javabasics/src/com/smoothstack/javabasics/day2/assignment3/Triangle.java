@@ -33,10 +33,21 @@ public class Triangle implements Shape {
 	 */
 	public static void main(String[] args) {
 		// Builds triangle from three points in command line
-		int[] xs = {Integer.valueOf(args[0]),Integer.valueOf(args[2]),Integer.valueOf(args[4])};
-		int[] ys = {Integer.valueOf(args[1]),Integer.valueOf(args[3]),Integer.valueOf(args[5])};
+		
+		try {
+			int[] xs = {Integer.valueOf(args[0]),Integer.valueOf(args[2]),Integer.valueOf(args[4])};
+			int[] ys = {Integer.valueOf(args[1]),Integer.valueOf(args[3]),Integer.valueOf(args[5])};
+		
 		Triangle t = new Triangle(xs,ys);
 		System.out.println("Area of given triangle is "+t.calculateArea());
 		t.display();
+		} catch(NumberFormatException e){
+			System.out.println("At least one input is not an integer");
+			return;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Not enough inputs");
+			return;
+		}
+		
 	}
 }

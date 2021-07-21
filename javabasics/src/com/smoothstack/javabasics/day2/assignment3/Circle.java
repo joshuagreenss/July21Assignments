@@ -18,7 +18,7 @@ public class Circle implements Shape{
 	public void display() {
 		JFrame frame = new JFrame("Triangle");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		CircPanel shape = new CircPanel(r,cx-r/2,cy-r/2);
+		CircPanel shape = new CircPanel(r,cx-r,cy-r);
 		frame.add(shape);
 		
 		frame.pack();
@@ -26,8 +26,16 @@ public class Circle implements Shape{
 	}
 	
 	public static void main(String args[]) {
-		Circle c = new Circle(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]));
-		System.out.println("Area of the given circle is " + c.calculateArea());
-		c.display();
+		try {
+			Circle c = new Circle(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]));
+			System.out.println("Area of the given circle is " + c.calculateArea());
+			c.display();
+		} catch(NumberFormatException e){
+			System.out.println("At least one input not an integer");
+			return;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Not enough inputs");
+			return;
+		}
 	}
 }
