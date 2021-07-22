@@ -28,5 +28,4 @@ public class Assignment2 {
 			e.printStackTrace();
 		}
 	}
-
 }
