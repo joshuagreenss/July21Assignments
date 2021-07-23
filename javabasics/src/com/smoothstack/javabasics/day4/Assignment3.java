@@ -25,7 +25,7 @@ public class Assignment3 {
 				Integer value = 1;
 				while(true) {
 					if(items < 10) {
-						synchronized(items) {
+						synchronized(buf) {
 							if(items < 10) {
 								buf.add(value);
 								items++;
@@ -47,7 +47,7 @@ public class Assignment3 {
 				Integer value = 0;
 				while(true) {
 					if(items > 0) {
-						synchronized(items) {
+						synchronized(buf) {
 							if(items > 0) {
 								value = buf.get(0);
 								buf.remove(0);
