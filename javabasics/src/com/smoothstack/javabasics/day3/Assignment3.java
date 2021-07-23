@@ -37,5 +37,4 @@ public class Assignment3 {
 		}
 		System.out.println("Character " + args[0] + " found in the text " + count + " times");
 	}
-
 }
