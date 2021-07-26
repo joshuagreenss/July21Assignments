@@ -9,8 +9,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class DateTimeAPI {
-	public static void q1() {
+	public static ZonedDateTime q1() {
 		ZonedDateTime q1 = ZonedDateTime.of(1996, 10, 2, 5, 6, 32, 876, ZoneId.of("America/Los_Angeles"));
+		return q1;
 	}
 	
 	public static void q2() {
@@ -22,7 +23,7 @@ public class DateTimeAPI {
 	}
 	
 	public static void q4() {
-		Instant q4 = Instant.now();
+		Instant q4 = ZonedDateTime.now().toInstant();
 		ZonedDateTime fromInstant = ZonedDateTime.ofInstant(q4, ZoneId.of("America/Los_Angeles"));
 		System.out.println(fromInstant);
 	}
@@ -44,14 +45,12 @@ public class DateTimeAPI {
 	
 	public static void q6(Month m) {
 		LocalDate val = LocalDate.of(LocalDateTime.now().getYear(), m, 1);
-		int count = 0;
 		while(val.getMonth() == m) {
 			if(val.getDayOfWeek() == DayOfWeek.MONDAY) {
-				count++;
+				System.out.println(val);
 			}
 			val = val.plusDays(1);
 		}
-		System.out.println(count + " Mondays in " + m);
 	}
 	
 	public static void q7(Month m, int d, int y) {
