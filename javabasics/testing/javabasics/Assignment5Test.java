@@ -20,6 +20,7 @@ public class Assignment5Test {
 		List<Integer> l4 = List.of();
 		List<Integer> l5 = List.of(-1,-1,4,7,5);
 		List<Integer> l6 = List.of(0);
+		List<Integer> l7 = List.of(1,1,2,2,3,3,4,4);
 		
 		assertTrue(base.groupSumClump(l1, 10));
 		assertTrue(base.groupSumClump(l2, 14));
@@ -27,5 +28,8 @@ public class Assignment5Test {
 		assertFalse(base.groupSumClump(l4, 0));
 		assertTrue(base.groupSumClump(l5, 2));
 		assertTrue(base.groupSumClump(l6, 0));
+		assertTrue(base.groupSumClump(l3, 16));
+		assertTrue(base.groupSumClump(l7, 8));
+		assertFalse(base.groupSumClump(l7, 3));
 	}
 }
