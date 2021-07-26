@@ -6,13 +6,13 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.smoothstack.javabasics.weekend.Lambdas;
+import com.smoothstack.javabasics.weekend.Assignment1;
 import com.smoothstack.javabasics.weekend.PerformOperation;
 
-public class LambdasTest {
+public class Assignment1Test {
 	@Test
 	public void oddTest() {
-		PerformOperation test = Lambdas.isOdd();
+		PerformOperation test = Assignment1.isOdd();
 		assertTrue(test.operation(1));
 		assertTrue(test.operation(-1));
 		assertFalse(test.operation(0));
@@ -27,7 +27,7 @@ public class LambdasTest {
 	}
 	
 	@Test public void primeTest() {
-		PerformOperation test = Lambdas.isPrime();
+		PerformOperation test = Assignment1.isPrime();
 		assertTrue(test.operation(2));
 		assertFalse(test.operation(1));
 		assertFalse(test.operation(0));
@@ -43,7 +43,7 @@ public class LambdasTest {
 		}
 	}
 	@Test public void palindromeTest() {
-		PerformOperation test = Lambdas.isPalindrome();
+		PerformOperation test = Assignment1.isPalindrome();
 		assertTrue(test.operation(111));
 		assertFalse(test.operation(12));
 		assertTrue(test.operation(1234321));

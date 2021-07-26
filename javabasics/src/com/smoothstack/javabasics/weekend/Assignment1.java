@@ -1,6 +1,6 @@
 package com.smoothstack.javabasics.weekend;
 
-public class Lambdas {
+public class Assignment1 {
 	
 	public static PerformOperation isOdd() {
 		PerformOperation op = (i) -> i%2 != 0;
