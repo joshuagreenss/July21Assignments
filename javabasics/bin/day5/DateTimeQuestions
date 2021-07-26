@@ -1,0 +1,10 @@
+1. I would use a ZonedDateTime with the method .of to instantiate it. Demonstrated in DateTimeAPI.java
+2. I would use the given date to create a LocalDate with that date. I can then use the method .getDayOfWeek()
+   to find what day of the week that was, then use .minusDays to subtract the number of days until Thursday. I
+   can do this either as a do while loop, with the condition (!(day.getDayOfWeek() == 'Thursday')) or by calculating
+   how many days to subtract. Do while loop is appropriate in case the given date is a Thursday. Demonstrated in DateTimeAPI.java
+3. A ZoneId signifies a specified time zone, while a ZoneOffset describes the difference between a specified time zone and UTC.
+4. A ZonedDateTime has two built-in methods that are useful here: .ofInstant(), which returns a new ZonedDateTime
+   from a given Instant and a ZoneId, and .toInstant(), which returns the Instant of the ZonedDateTime. These are the
+   easiest ways to convert between the two. An example is in DateTimeAPI.java.
+5. See DateTimeAPI.java
