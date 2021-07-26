@@ -31,5 +31,6 @@ public class Assignment5Test {
 		assertTrue(base.groupSumClump(l3, 16));
 		assertTrue(base.groupSumClump(l7, 8));
 		assertFalse(base.groupSumClump(l7, 3));
+		assertTrue(base.groupSumClump(l7, 20));
 	}
 }
