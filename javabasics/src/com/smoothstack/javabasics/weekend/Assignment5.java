@@ -3,6 +3,7 @@ package com.smoothstack.javabasics.weekend;
 import java.util.List;
 
 public class Assignment5 {
+	//Recursively finds whether a subset of a list sums to a given number, grouping clumps of equal numbers together
 	public Boolean groupSumClump(List<Integer> ints, int target){
 		//Reached end of list with no target found
 		if(ints.size() == 0) {

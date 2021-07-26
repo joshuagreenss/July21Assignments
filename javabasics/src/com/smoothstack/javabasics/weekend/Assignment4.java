@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assignment4 {
+	//Uses foreach loop to create new string without xs for a given string
+	//Returns new list of strings with cleaned strings
 	public List<String> noX(List<String> strings){
 		List<String> vals = new ArrayList<>();
 		StringBuilder clean;
