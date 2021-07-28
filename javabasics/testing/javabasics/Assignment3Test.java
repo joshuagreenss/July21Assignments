@@ -31,4 +31,7 @@ public class Assignment3Test {
 			
 		}
 	}
+	
+	public static void main(String[] args) {
+	}
 }

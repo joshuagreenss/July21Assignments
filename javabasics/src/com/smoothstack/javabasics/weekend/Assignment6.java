@@ -2,6 +2,8 @@ package com.smoothstack.javabasics.weekend;
 
 public class Assignment6 {
 	public static class SampleSingleton {
+		private SampleSingleton() {}
+		
 		private static Object conn = null;
 
 		private static SampleSingleton instance = null;
