@@ -3,7 +3,10 @@
  */
 package com.smoothstack.utopia.testing;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -23,7 +26,14 @@ public class DAOTesting {
 		testAirport.setCode("ABC");
 		testAirport.setCity("Test City");
 		try {
-			AirportDAO.add
+			AirportDAO.insert(testAirport);
+			assertArrayEquals(List.of("ABC","Test City").toArray(), AirportDAO.queryCity("Test City"));
+			testAirport.setCity("Test 2");
+			AirportDAO.update(testAirport);
+			assertArrayEquals(List.of("ABC","Test 2").toArray(), AirportDAO.queryCode("ABC"));
+			AirportDAO.delete(testAirport);
+			assertArrayEquals(List.of().toArray(), AirportDAO.queryCode("ABC"));
+			
 		}catch(SQLException | ClassNotFoundException e) {
 			
 		}
