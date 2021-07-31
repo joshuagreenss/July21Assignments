@@ -49,13 +49,12 @@ public abstract class DAO<T> {
 		return null;
 	}
 
-	protected List<T> query(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
+	public List<T> query(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		int i = 1;
 		if (vals != null) {
 			for (Object o : vals) {
-				pstmt.setObject(i, 0);
-				;
+				pstmt.setObject(i, o);
 				i++;
 			}
 		}
