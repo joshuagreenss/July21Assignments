@@ -12,7 +12,6 @@ public class BookingUserDAO extends DAO<BookingUser> {
 
 	public BookingUserDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void insert(BookingUser user) throws ClassNotFoundException, SQLException {
