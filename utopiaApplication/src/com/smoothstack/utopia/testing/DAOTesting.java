@@ -14,8 +14,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.smoothstack.utopia.dao.AirplaneDAO;
+import com.smoothstack.utopia.dao.AirplaneTypeDAO;
 import com.smoothstack.utopia.dao.AirportDAO;
 import com.smoothstack.utopia.domain.Airplane;
+import com.smoothstack.utopia.domain.AirplaneType;
 import com.smoothstack.utopia.domain.Airport;
 import com.smoothstack.utopia.domain.Booking;
 import com.smoothstack.utopia.domain.BookingAgent;
@@ -25,7 +28,6 @@ import com.smoothstack.utopia.domain.Flight;
 import com.smoothstack.utopia.domain.FlightBooking;
 import com.smoothstack.utopia.domain.Passenger;
 import com.smoothstack.utopia.domain.Payment;
-import com.smoothstack.utopia.domain.PlaneType;
 import com.smoothstack.utopia.domain.Route;
 import com.smoothstack.utopia.domain.User;
 import com.smoothstack.utopia.domain.UserRole;
@@ -65,8 +67,8 @@ public class DAOTesting {
 	@Test
 	public void planeTypeTest() {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			PlaneTypeDAO testDAO = new PlaneTypeDAO(conn);
-			PlaneType testType = new PlaneType();
+			AirplaneTypeDAO testDAO = new AirplaneTypeDAO(conn);
+			AirplaneType testType = new AirplaneType();
 			String sql = "SELECT * FROM airplane_type WHERE id=?";
 			String[] id = new String[] { "1111" };
 

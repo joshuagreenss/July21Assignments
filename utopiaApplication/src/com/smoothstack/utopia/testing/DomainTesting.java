@@ -18,7 +18,7 @@ import com.smoothstack.utopia.domain.Flight;
 import com.smoothstack.utopia.domain.FlightBooking;
 import com.smoothstack.utopia.domain.Passenger;
 import com.smoothstack.utopia.domain.Payment;
-import com.smoothstack.utopia.domain.PlaneType;
+import com.smoothstack.utopia.domain.AirplaneType;
 import com.smoothstack.utopia.domain.Route;
 import com.smoothstack.utopia.domain.User;
 import com.smoothstack.utopia.domain.UserRole;
@@ -72,7 +72,7 @@ public class DomainTesting {
 
 	@Test
 	public void planeTypeTest() {
-		PlaneType test = new PlaneType();
+		AirplaneType test = new AirplaneType();
 		assertNull(test.getId());
 		assertNull(test.getCapacity());
 		test.setId(1234);

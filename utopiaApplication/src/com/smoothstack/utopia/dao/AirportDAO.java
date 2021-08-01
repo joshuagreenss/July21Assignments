@@ -34,7 +34,6 @@ public class AirportDAO extends DAO<Airport> {
 	
 	@Override
 	protected List<Airport> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
 		if(rs != null) {
 			List<Airport> results = new ArrayList<>();
 			Airport item = new Airport();

@@ -2,7 +2,7 @@ package com.smoothstack.utopia.domain;
 
 import java.util.Objects;
 
-public class PlaneType {
+public class AirplaneType {
 	private Integer id = null;
 	private Integer capacity = null;
 
@@ -35,7 +35,7 @@ public class PlaneType {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PlaneType other = (PlaneType) obj;
+		AirplaneType other = (AirplaneType) obj;
 		return Objects.equals(capacity, other.capacity) && Objects.equals(id, other.id);
 	}
 }
