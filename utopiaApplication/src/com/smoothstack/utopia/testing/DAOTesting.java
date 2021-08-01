@@ -17,6 +17,8 @@ import org.junit.Test;
 import com.smoothstack.utopia.dao.AirplaneDAO;
 import com.smoothstack.utopia.dao.AirplaneTypeDAO;
 import com.smoothstack.utopia.dao.AirportDAO;
+import com.smoothstack.utopia.dao.BookingDAO;
+import com.smoothstack.utopia.dao.RouteDAO;
 import com.smoothstack.utopia.domain.Airplane;
 import com.smoothstack.utopia.domain.AirplaneType;
 import com.smoothstack.utopia.domain.Airport;
@@ -50,7 +52,7 @@ public class DAOTesting {
 			testAirport.setCode("ABC");
 			testAirport.setCity("Test City");
 			testDAO.insert(testAirport);
-			assertArrayEquals(new Airport[] { testAirport }, testDAO.query("sql", id).toArray());
+			assertArrayEquals(new Airport[] { testAirport }, testDAO.query(sql, id).toArray());
 
 			testAirport.setCity("Test 2");
 			testDAO.update(testAirport);
@@ -65,7 +67,7 @@ public class DAOTesting {
 	}
 
 	@Test
-	public void planeTypeTest() {
+	public void airplaneTypeTest() {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			AirplaneTypeDAO testDAO = new AirplaneTypeDAO(conn);
 			AirplaneType testType = new AirplaneType();
@@ -213,13 +215,15 @@ public class DAOTesting {
 			String[] id = new String[] { "1111" };
 
 			testBooking.setId(1111);
+			testBooking.setActive(0);
+			testBooking.setCode("ABCDE");
 			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testBooking);
 			assertArrayEquals(List.of(testBooking).toArray(), testDAO.query(sql, id).toArray());
 
-			testBooking.setActive(0);
-			testBooking.setCode("ABCDE");
+			testBooking.setActive(1);
+			testBooking.setCode("FGHIJ");
 			testDAO.update(testBooking);
 			assertArrayEquals(List.of(testBooking).toArray(), testDAO.query(sql, id).toArray());
 

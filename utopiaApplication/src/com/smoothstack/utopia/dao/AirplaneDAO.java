@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.smoothstack.utopia.domain.Airplane;
-import com.smoothstack.utopia.domain.Airport;
 
 public class AirplaneDAO extends DAO<Airplane> {
 
