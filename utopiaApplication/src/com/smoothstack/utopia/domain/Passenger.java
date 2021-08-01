@@ -1,6 +1,7 @@
 package com.smoothstack.utopia.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Passenger {
 	private Integer id = null;
@@ -51,5 +52,23 @@ public class Passenger {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, bid, dob, fName, gName, gender, id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Passenger other = (Passenger) obj;
+		return Objects.equals(address, other.address) && Objects.equals(bid, other.bid)
+				&& Objects.equals(dob, other.dob) && Objects.equals(fName, other.fName)
+				&& Objects.equals(gName, other.gName) && Objects.equals(gender, other.gender)
+				&& Objects.equals(id, other.id);
 	}
 }

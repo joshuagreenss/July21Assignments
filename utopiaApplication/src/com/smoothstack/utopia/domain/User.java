@@ -1,5 +1,7 @@
 package com.smoothstack.utopia.domain;
 
+import java.util.Objects;
+
 public class User {
 	private Integer id = null;
 	private Integer role = null;
@@ -72,5 +74,25 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, fName, gName, id, password, phone, role, username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(email, other.email) && Objects.equals(fName, other.fName)
+				&& Objects.equals(gName, other.gName) && Objects.equals(id, other.id)
+				&& Objects.equals(password, other.password) && Objects.equals(phone, other.phone)
+				&& Objects.equals(role, other.role) && Objects.equals(username, other.username);
 	}
 }

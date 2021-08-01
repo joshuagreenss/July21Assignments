@@ -1,5 +1,7 @@
 package com.smoothstack.utopia.domain;
 
+import java.util.Objects;
+
 public class Airplane {
 	private Integer id = null;
 	private Integer type = null;
@@ -18,5 +20,22 @@ public class Airplane {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Airplane other = (Airplane) obj;
+		return Objects.equals(id, other.id) && Objects.equals(type, other.type);
 	}
 }
