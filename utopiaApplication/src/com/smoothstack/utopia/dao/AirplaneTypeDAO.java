@@ -14,7 +14,12 @@ public class AirplaneTypeDAO extends DAO<AirplaneType> {
 	}
 
 	public void insert(AirplaneType type) throws ClassNotFoundException, SQLException {
+		if(type.getId() != null) {
 		this.commit("INSERT INTO airplane_type VALUES (?, ?)", new Object[] {type.getId(), type.getCapacity()});
+		}
+		else {
+			this.commit("INSERT INTO airplane_type(max_capacity) VALUES (?)", new Object[] {type.getCapacity()});
+		}
 	}
 	
 	public void update(AirplaneType type) throws ClassNotFoundException, SQLException {

@@ -16,23 +16,28 @@ public class AirplaneDAO extends DAO<Airplane> {
 	}
 
 	public void insert(Airplane airplane) throws ClassNotFoundException, SQLException {
-		this.commit("INSERT INTO Airplane VALUES (?, ?)", new Object[] {airplane.getId(), airplane.getType()});
+		if (airplane.getId() != null) {
+			this.commit("INSERT INTO Airplane VALUES (?, ?)", new Object[] { airplane.getId(), airplane.getType() });
+		} else {
+			this.commit("INSERT INTO Airplane (type) VALUES(?)", new Object[] { airplane.getType() });
+		}
 	}
-	
+
 	public void update(Airplane airplane) throws ClassNotFoundException, SQLException {
-		this.commit("UPDATE Airplane SET city = ? WHERE id = ?", new Object[] {airplane.getType(),airplane.getId()});
+		this.commit("UPDATE Airplane SET city = ? WHERE id = ?", new Object[] { airplane.getType(), airplane.getId() });
 	}
 
 	public void delete(Airplane airplane) throws ClassNotFoundException, SQLException {
-		this.commit("DELETE FROM Airplane WHERE iata_id = ? AND city = ?", new Object[] {airplane.getId(),airplane.getType()});
+		this.commit("DELETE FROM Airplane WHERE iata_id = ? AND city = ?",
+				new Object[] { airplane.getId(), airplane.getType() });
 	}
-	
+
 	@Override
 	protected List<Airplane> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
-		if(rs != null) {
+		if (rs != null) {
 			List<Airplane> results = new ArrayList<>();
 			Airplane item = new Airplane();
-			while(rs.next()) {
+			while (rs.next()) {
 				item.setId(rs.getInt(1));
 				item.setType(rs.getInt(2));
 				results.add(item);

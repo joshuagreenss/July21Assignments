@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.smoothstack.utopia.domain.Airplane;
 import com.smoothstack.utopia.domain.Booking;
 
 public class BookingDAO extends DAO<Booking> {

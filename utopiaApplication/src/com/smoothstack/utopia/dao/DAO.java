@@ -14,7 +14,7 @@ import java.util.List;
  *
  */
 public abstract class DAO<T> {
-	public static Connection conn = null;
+	public Connection conn = null;
 	
 	public DAO(Connection conn) {
 		this.conn = conn;
