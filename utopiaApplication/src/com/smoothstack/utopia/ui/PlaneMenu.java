@@ -77,7 +77,7 @@ public class PlaneMenu implements ObjectMenu {
 
 	@Override
 	public void read(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Airport";
+		String sql = "SELECT * FROM Airplane";
 		int i = 1;
 		AirportDAO dao = new AirportDAO(conn);
 		List<Airport> as = dao.query(sql, null);

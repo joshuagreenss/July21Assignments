@@ -38,8 +38,9 @@ public class AirportDAO extends DAO<Airport> {
 	protected List<Airport> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<Airport> results = new ArrayList<>();
-			Airport item = new Airport();
+			Airport item;
 			while (rs.next()) {
+				item = new Airport();
 				item.setCode(rs.getString(1));
 				item.setCity(rs.getString(2));
 				results.add(item);

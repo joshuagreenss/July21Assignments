@@ -32,8 +32,9 @@ public class PaymentDAO extends DAO<Payment> {
 	protected List<Payment> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<Payment> results = new ArrayList<>();
-			Payment item = new Payment();
+			Payment item;
 			while (rs.next()) {
+				item = new Payment();
 				item.setId(rs.getInt(1));
 				item.setSid(rs.getString(2));
 				item.setRefund(rs.getInt(3));

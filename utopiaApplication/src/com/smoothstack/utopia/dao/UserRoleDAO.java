@@ -34,8 +34,9 @@ public class UserRoleDAO extends DAO<UserRole> {
 	protected List<UserRole> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<UserRole> results = new ArrayList<>();
-			UserRole item = new UserRole();
+			UserRole item;
 			while (rs.next()) {
+				item = new UserRole();
 				item.setId(rs.getInt(1));
 				item.setName(rs.getString(2));
 				results.add(item);

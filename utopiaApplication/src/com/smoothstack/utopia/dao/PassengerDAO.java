@@ -43,8 +43,9 @@ public class PassengerDAO extends DAO<Passenger> {
 	protected List<Passenger> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<Passenger> results = new ArrayList<>();
-			Passenger item = new Passenger();
+			Passenger item;
 			while (rs.next()) {
+				item = new Passenger();
 				item.setId(rs.getInt(1));
 				item.setBid(rs.getInt(2));
 				item.setgName(rs.getString(3));

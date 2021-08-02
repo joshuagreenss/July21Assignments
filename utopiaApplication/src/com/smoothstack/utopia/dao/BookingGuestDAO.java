@@ -33,8 +33,9 @@ public class BookingGuestDAO extends DAO<BookingGuest> {
 		// TODO Auto-generated method stub
 		if (rs != null) {
 			List<BookingGuest> results = new ArrayList<>();
-			BookingGuest item = new BookingGuest();
+			BookingGuest item;
 			while (rs.next()) {
+				item = new BookingGuest();
 				item.setId(rs.getInt(1));
 				item.setEmail(rs.getString(2));
 				item.setPhone(rs.getString(3));

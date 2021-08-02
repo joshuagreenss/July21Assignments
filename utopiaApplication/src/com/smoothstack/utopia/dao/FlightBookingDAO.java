@@ -28,8 +28,9 @@ public class FlightBookingDAO extends DAO<FlightBooking> {
 	protected List<FlightBooking> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<FlightBooking> results = new ArrayList<>();
-			FlightBooking item = new FlightBooking();
+			FlightBooking item;
 			while (rs.next()) {
+				item = new FlightBooking();
 				item.setFlight(rs.getInt(1));
 				item.setBooking(rs.getInt(2));
 				results.add(item);

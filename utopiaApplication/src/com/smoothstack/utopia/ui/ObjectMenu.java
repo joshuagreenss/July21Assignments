@@ -10,19 +10,20 @@ public interface ObjectMenu {
 	public default void mainMenu(Scanner s) {
 
 		int input = 0;
-		do {
-			System.out.println("1) Add");
-			System.out.println("2) Update");
-			System.out.println("3) Delete");
-			System.out.println("4) Read");
-			System.out.println("5) Return");
+		try (Connection conn = ConnectionUtil.getConnection()) {
 			try {
-				input = s.nextInt();
-			} catch (Exception e) {
-				System.out.println("Invalid input");
-			}
-			try (Connection conn = ConnectionUtil.getConnection()) {
-				try {
+				do {
+					System.out.println("1) Add");
+					System.out.println("2) Update");
+					System.out.println("3) Delete");
+					System.out.println("4) Read");
+					System.out.println("5) Return");
+					try {
+						input = s.nextInt();
+					} catch (Exception e) {
+						System.out.println("Invalid input");
+					}
+
 					switch (input) {
 					case (1):
 						add(conn);
@@ -41,24 +42,25 @@ public interface ObjectMenu {
 					default:
 						System.out.println("Invalid input");
 					}
-					conn.commit();
-				} catch (SQLException | ClassNotFoundException e) {
+				} while (input != 5);
+				conn.commit();
 
-				} finally {
-					conn.close();
-				}
 			} catch (SQLException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			} finally {
+				conn.close();
 			}
-		} while (input != 5);
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void add(Connection conn)throws ClassNotFoundException, SQLException;
+	public void add(Connection conn) throws ClassNotFoundException, SQLException;
 
-	public void update(Connection conn)throws ClassNotFoundException, SQLException;
+	public void update(Connection conn) throws ClassNotFoundException, SQLException;
 
-	public void delete(Connection conn)throws ClassNotFoundException, SQLException;
+	public void delete(Connection conn) throws ClassNotFoundException, SQLException;
 
-	public void read(Connection conn)throws ClassNotFoundException, SQLException;
+	public void read(Connection conn) throws ClassNotFoundException, SQLException;
 }

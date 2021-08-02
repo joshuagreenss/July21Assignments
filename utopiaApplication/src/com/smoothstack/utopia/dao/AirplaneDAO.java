@@ -36,8 +36,9 @@ public class AirplaneDAO extends DAO<Airplane> {
 	protected List<Airplane> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<Airplane> results = new ArrayList<>();
-			Airplane item = new Airplane();
+			Airplane item;
 			while (rs.next()) {
+				item = new Airplane();
 				item.setId(rs.getInt(1));
 				item.setType(rs.getInt(2));
 				results.add(item);

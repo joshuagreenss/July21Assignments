@@ -38,8 +38,9 @@ public class RouteDAO extends DAO<Route> {
 	protected List<Route> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<Route> results = new ArrayList<>();
-			Route item = new Route();
+			Route item;
 			while (rs.next()) {
+				item = new Route();
 				item.setId(rs.getInt(1));
 				item.setOrig(rs.getString(2));
 				item.setDest(rs.getString(3));

@@ -14,25 +14,28 @@ public class OverrideCancelMenu {
 		int choice = 0;
 		int i = 0;
 		String sql = "SELECT * FROM Booking WHERE is_active = 0";
-		String ovr = "UPDATE Booking SET is_active = 1 WHERE id = ?";
 		List<Booking> bs;
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			try {
 				i = 1;
 				BookingDAO dao = new BookingDAO(conn);
 				do {
-					bs = dao.query(sql,null);
-					for(Booking b : bs) {
-						System.out.println(i+") id: "+b.getId()+" Active: "+b.getActive()+" Confirmation Code: "+b.getCode());
+					bs = dao.query(sql, null);
+					i = 1;
+					for (Booking b : bs) {
+						System.out.println(i + ") id: " + b.getId() + " Active: " + b.getActive()
+								+ " Confirmation Code: " + b.getCode());
 						i++;
 					}
+					System.out.println(i + ") Return to Previous Menu");
 					try {
 						choice = s.nextInt();
-					}catch(Exception e){
+					} catch (Exception e) {
 						System.out.println("Invalid input");
 					}
-					if(choice > 0 && choice < bs.size()+1) {
-						dao.query(ovr, new Object[]{bs.get(choice-1).getId()});
+					if (choice > 0 && choice < bs.size() + 1) {
+						bs.get(choice - 1).setActive(1);
+						dao.update(bs.get(choice - 1));
 					}
 				} while (choice != bs.size() + 1);
 				conn.commit();
@@ -41,11 +44,7 @@ public class OverrideCancelMenu {
 			} finally {
 				conn.rollback();
 			}
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

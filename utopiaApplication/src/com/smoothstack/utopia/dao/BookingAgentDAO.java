@@ -32,8 +32,9 @@ public class BookingAgentDAO extends DAO<BookingAgent> {
 	protected List<BookingAgent> listData(ResultSet rs) throws ClassNotFoundException, SQLException {
 		if (rs != null) {
 			List<BookingAgent> results = new ArrayList<>();
-			BookingAgent item = new BookingAgent();
+			BookingAgent item;
 			while (rs.next()) {
+				item = new BookingAgent();
 				item.setBid(rs.getInt(1));
 				item.setAid(rs.getInt(2));
 				results.add(item);
