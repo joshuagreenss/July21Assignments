@@ -175,7 +175,7 @@ public class PassengerHelperDAO extends UserDAO {
 	public void cancel(Flight flight, int bid) throws ClassNotFoundException, SQLException {
 		FlightDAO fdao = new FlightDAO(conn);
 		fdao.update(flight);
-		String sql = "DELETE FROM Booking WHERE id=?";
+		String sql = "UPDATE Booking SET is_active = 0 WHERE id=?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setObject(1, bid);
 		pstmt.executeUpdate();

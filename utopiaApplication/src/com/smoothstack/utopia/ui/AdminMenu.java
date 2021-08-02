@@ -46,6 +46,7 @@ public class AdminMenu {
 				m.mainMenu(s);
 				break;
 			case (7):
+				OverrideCancelMenu.mainMenu(s);
 				break;
 			case (8):
 				break;
