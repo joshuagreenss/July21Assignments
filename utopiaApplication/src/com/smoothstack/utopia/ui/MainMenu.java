@@ -9,6 +9,7 @@ public class MainMenu {
 		menu(s);
 		s.close();
 	}
+
 	public static void menu(Scanner s) {
 		int choice = 0;
 		while (choice != 4) {
@@ -17,16 +18,21 @@ public class MainMenu {
 			System.out.println("2) Traveler");
 			System.out.println("3) Administrator");
 			System.out.println("4) Quit");
-			choice = s.nextInt();
+			try {
+				choice = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input");
+				s.reset();
+			}
 			switch (choice) {
 			case (1):
 				AgentMenu.mainMenu(s);
 				break;
 			case (2):
-				PassengerMenu.mainMenu(s);
+				TravelerMenu.mainMenu(s);
 				break;
 			case (3):
-				System.out.println("Not yet implemented");
+				AdminMenu.mainMenu(s);
 				break;
 			case (4):
 				System.out.println("Goodbye!");

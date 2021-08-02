@@ -16,7 +16,7 @@ import com.smoothstack.utopia.domain.Passenger;
 import com.smoothstack.utopia.domain.User;
 import com.smoothstack.utopia.utils.ConnectionUtil;
 
-public class PassengerMenu {
+public class TravelerMenu {
 
 	public static void mainMenu(Scanner s) {
 		int choice = 0;
