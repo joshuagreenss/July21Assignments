@@ -14,8 +14,8 @@ public class MainMenu {
 		while (choice != 4) {
 			System.out.println("Welcome to Utopia! What kind of user are you?");
 			System.out.println("1) Employee/Agent");
-			System.out.println("2) Administrator");
-			System.out.println("3) Traveler");
+			System.out.println("2) Traveler");
+			System.out.println("3) Administrator");
 			System.out.println("4) Quit");
 			choice = s.nextInt();
 			switch (choice) {
@@ -23,7 +23,7 @@ public class MainMenu {
 				AgentMenu.mainMenu(s);
 				break;
 			case (2):
-				System.out.println("Not yet implemented");
+				PassengerMenu.mainMenu(s);
 				break;
 			case (3):
 				System.out.println("Not yet implemented");

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public abstract class DAO<T> {
 	}
 
 	protected Integer commitGet(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		int i = 1;
 		if (vals != null) {
 			for (Object o : vals) {

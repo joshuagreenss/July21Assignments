@@ -39,7 +39,7 @@ public class AgentHelperDAO extends FlightDAO {
 		}
 		return response;
 	}
-
+	
 	public List<Flight> getSelection(String origin, String destination) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT Flight.id AS id, route_id, airplane_id, departure_time, reserved_seats, seat_price FROM flight INNER JOIN route ON route_id=route.id WHERE origin_id = ? AND destination_id = ?";
 		return query(sql, new String[] { origin, destination });
