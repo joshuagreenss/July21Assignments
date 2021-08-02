@@ -18,13 +18,8 @@ public class BookingUserDAO extends DAO<BookingUser> {
 		this.commit("INSERT INTO booking_user VALUES (?, ?)", new Object[] { user.getBid(), user.getUid() });
 	}
 
-	public void update(BookingUser user) throws ClassNotFoundException, SQLException {
-		this.commit("UPDATE booking_user SET user_id = ? WHERE booking_id = ?",
-				new Object[] { user.getUid(), user.getBid() });
-	}
-
 	public void delete(BookingUser user) throws ClassNotFoundException, SQLException {
-		this.commit("DELETE FROM booking_agent WHERE booking_id = ?", new Object[] { user.getBid() });
+		this.commit("DELETE FROM booking_user WHERE booking_id = ? AND user_id = ?", new Object[] { user.getBid(),user.getUid() });
 	}
 
 	@Override

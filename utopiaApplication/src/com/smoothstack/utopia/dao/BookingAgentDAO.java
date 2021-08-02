@@ -24,7 +24,8 @@ public class BookingAgentDAO extends DAO<BookingAgent> {
 	}
 
 	public void delete(BookingAgent agent) throws ClassNotFoundException, SQLException {
-		this.commit("DELETE FROM booking_agent WHERE booking_id = ?", new Object[] { agent.getBid() });
+		this.commit("DELETE FROM booking_agent WHERE booking_id = ? AND agent_id = ?",
+				new Object[] { agent.getBid(), agent.getAid() });
 	}
 
 	@Override

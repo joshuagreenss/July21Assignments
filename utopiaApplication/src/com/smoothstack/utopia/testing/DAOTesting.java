@@ -17,8 +17,17 @@ import org.junit.Test;
 import com.smoothstack.utopia.dao.AirplaneDAO;
 import com.smoothstack.utopia.dao.AirplaneTypeDAO;
 import com.smoothstack.utopia.dao.AirportDAO;
+import com.smoothstack.utopia.dao.BookingAgentDAO;
 import com.smoothstack.utopia.dao.BookingDAO;
+import com.smoothstack.utopia.dao.BookingGuestDAO;
+import com.smoothstack.utopia.dao.BookingUserDAO;
+import com.smoothstack.utopia.dao.FlightBookingDAO;
+import com.smoothstack.utopia.dao.FlightDAO;
+import com.smoothstack.utopia.dao.PassengerDAO;
+import com.smoothstack.utopia.dao.PaymentDAO;
 import com.smoothstack.utopia.dao.RouteDAO;
+import com.smoothstack.utopia.dao.UserDAO;
+import com.smoothstack.utopia.dao.UserRoleDAO;
 import com.smoothstack.utopia.domain.Airplane;
 import com.smoothstack.utopia.domain.AirplaneType;
 import com.smoothstack.utopia.domain.Airport;
@@ -136,7 +145,7 @@ public class DAOTesting {
 			testDAO.insert(testRoute);
 			assertArrayEquals(List.of(testRoute).toArray(), testDAO.query(sql, id).toArray());
 
-			testRoute.setDest("LAX");
+			testRoute.setDest("PDX");
 			testDAO.update(testRoute);
 			assertArrayEquals(List.of(testRoute).toArray(), testDAO.query(sql, id).toArray());
 
@@ -157,17 +166,21 @@ public class DAOTesting {
 			String[] id = new String[] { "1111" };
 
 			testFlight.setId(1111);
-			testFlight.setRoute(12);
-			testFlight.setPlane(31);
+			testFlight.setRoute(4);
+			testFlight.setPlane(8);
+			testFlight.setPrice(100f);
+			LocalDateTime now = LocalDateTime.now();
+			//Need to remove nanoseconds because mySQL does not store nanos
+			now = now.minusNanos(now.getNano());
+			testFlight.setDeparture(now);
+			testFlight.setReserved(0);
+
 			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testFlight);
 			assertArrayEquals(List.of(testFlight).toArray(), testDAO.query(sql, id).toArray());
 
 			testFlight.setPrice(110f);
-			LocalDateTime now = LocalDateTime.now();
-			testFlight.setDeparture(now);
-			testFlight.setReserved(0);
 			testDAO.update(testFlight);
 			assertArrayEquals(List.of(testFlight).toArray(), testDAO.query(sql, id).toArray());
 
@@ -184,18 +197,14 @@ public class DAOTesting {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			FlightBookingDAO testDAO = new FlightBookingDAO(conn);
 			FlightBooking testBooking = new FlightBooking();
-			String sql = "SELECT * FROM flight_bookings WHERE flight_id=?";
-			String[] id = new String[] { "1111" };
+			String sql = "SELECT * FROM flight_bookings WHERE flight_id=? AND booking_id=?";
+			String[] id = new String[] { "2","10" };
 
-			testBooking.setFlight(1111);
-			testBooking.setBooking(2222);
+			testBooking.setFlight(2);
+			testBooking.setBooking(10);
 			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testBooking);
-			assertArrayEquals(List.of(testBooking).toArray(), testDAO.query(sql, id).toArray());
-
-			testBooking.setBooking(3333);
-			testDAO.update(testBooking);
 			assertArrayEquals(List.of(testBooking).toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.delete(testBooking);
@@ -241,15 +250,16 @@ public class DAOTesting {
 			PaymentDAO testDAO = new PaymentDAO(conn);
 			Payment testPayment = new Payment();
 			String sql = "SELECT * FROM booking_payment WHERE booking_id=?";
-			String[] id = new String[] { "1111" };
+			String[] id = new String[] { "10" };
 			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
-
+			
+			testPayment.setId(10);
+			testPayment.setSid("IDNUMBER");
+			testPayment.setRefund(0);
 			testDAO.insert(testPayment);
 			assertArrayEquals(List.of(testPayment).toArray(), testDAO.query(sql, id).toArray());
 
-			testPayment.setId(1111);
-			testPayment.setSid("IDNUMBER");
-			testPayment.setRefund(0);
+			testPayment.setRefund(1);
 			testDAO.update(testPayment);
 			assertArrayEquals(List.of(testPayment).toArray(), testDAO.query(sql, id).toArray());
 
@@ -270,18 +280,19 @@ public class DAOTesting {
 			String[] id = new String[] { "1111" };
 
 			testPassenger.setId(1111);
-			testPassenger.setBid(2222);
-			assertArrayEquals(List.of().toArray(),
-					testDAO.query("SELECT * FROM Passenger WHERE id=?", new Integer[] { 1111 }).toArray());
-			testDAO.insert(testPassenger);
-			assertArrayEquals(List.of(testPassenger).toArray(), testDAO.query(sql, id).toArray());
-
+			testPassenger.setBid(6);
 			testPassenger.setgName("First");
 			testPassenger.setfName("Family");
 			LocalDate now = LocalDate.now();
 			testPassenger.setDob(now);
 			testPassenger.setGender("G");
 			testPassenger.setAddress("1234 Extant Way");
+			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
+
+			testDAO.insert(testPassenger);
+			assertArrayEquals(List.of(testPassenger).toArray(), testDAO.query(sql, id).toArray());
+			
+			testPassenger.setgName("New");
 			testDAO.update(testPassenger);
 			assertArrayEquals(List.of(testPassenger).toArray(), testDAO.query(sql, id).toArray());
 
@@ -298,17 +309,18 @@ public class DAOTesting {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			BookingAgentDAO testDAO = new BookingAgentDAO(conn);
 			BookingAgent testAgent = new BookingAgent();
-			String sql = "SELECT * FROM booking_agent WHERE booking_id=?";
-			String[] id = new String[] { "1111" };
+			String sql = "SELECT * FROM booking_agent WHERE booking_id=? AND agent_id=?";
+			String[] id = new String[] { "9", "3" };
 
-			testAgent.setBid(1111);
-			testAgent.setAid(2222);
-			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray().toArray());
+			testAgent.setBid(9);
+			testAgent.setAid(3);
+			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testAgent);
 			assertArrayEquals(List.of(testAgent).toArray(), testDAO.query(sql, id).toArray());
 
-			testAgent.setAid(3333);
+			testAgent.setAid(1);
+			id[1] = "1";
 			testDAO.update(testAgent);
 			assertArrayEquals(List.of(testAgent).toArray(), testDAO.query(sql, id).toArray());
 
@@ -325,18 +337,14 @@ public class DAOTesting {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			BookingUserDAO testDAO = new BookingUserDAO(conn);
 			BookingUser testUser = new BookingUser();
-			String sql = "SELECT * FROM booking_user WHERE booking_id=?";
-			String[] id = new String[] { "1111" };
+			String sql = "SELECT * FROM booking_user WHERE booking_id=? AND user_id=?";
+			String[] id = new String[] { "1","1" };
 
-			testUser.setBid(1111);
-			testUser.setUid(2222);
+			testUser.setBid(1);
+			testUser.setUid(1);
 			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testUser);
-			assertArrayEquals(List.of(testUser).toArray(), testDAO.query(sql, id).toArray());
-
-			testUser.setUid(3333);
-			testDAO.update(testUser);
 			assertArrayEquals(List.of(testUser).toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.delete(testUser);
@@ -353,16 +361,17 @@ public class DAOTesting {
 			BookingGuestDAO testDAO = new BookingGuestDAO(conn);
 			BookingGuest testGuest = new BookingGuest();
 			String sql = "SELECT * FROM booking_guest WHERE booking_id=?";
-			String[] id = new String[] { "1111" };
+			String[] id = new String[] { "5" };
 
-			testGuest.setId(1111);
-			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray().toArray());
+			testGuest.setId(5);
+			testGuest.setEmail("e@mail.com");
+			testGuest.setPhone("555-555-5559");
+			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testGuest);
 			assertArrayEquals(List.of(testGuest).toArray(), testDAO.query(sql, id).toArray());
-
-			testGuest.setEmail("e@mail.com");
-			testGuest.setPhone("555-555-5555");
+			
+			testGuest.setPhone("555-555-5560");
 			testDAO.update(testGuest);
 			assertArrayEquals(List.of(testGuest).toArray(), testDAO.query(sql, id).toArray());
 
@@ -383,18 +392,19 @@ public class DAOTesting {
 			String[] id = new String[] { "1111" };
 
 			testUser.setId(1111);
-			testUser.setRole(2222);
-			assertArrayEquals(List.of().toArray(), testDAO.query(testDAO.query(sql, id).toArray()).toArray());
-
-			testDAO.insert(testUser);
-			assertArrayEquals(List.of(testUser).toArray(), testDAO.query(sql, id).toArray());
+			testUser.setRole(2);
+			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testUser.setgName("First");
 			testUser.setfName("Family");
 			testUser.setUsername("username");
 			testUser.setEmail("e@mail.com");
 			testUser.setPassword("password");
-			testUser.setPhone("555-555-5555");
+			testUser.setPhone("555-555-5559");
+			testDAO.insert(testUser);
+			assertArrayEquals(List.of(testUser).toArray(), testDAO.query(sql, id).toArray());
+
+			testUser.setUsername("username2");
 			testDAO.update(testUser);
 			assertArrayEquals(List.of(testUser).toArray(), testDAO.query(sql, id).toArray());
 
@@ -415,12 +425,13 @@ public class DAOTesting {
 			String[] id = new String[] { "1111" };
 
 			testRole.setId(1111);
-			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray().toArray());
+			testRole.setName("TEST");
+			assertArrayEquals(List.of().toArray(), testDAO.query(sql, id).toArray());
 
 			testDAO.insert(testRole);
 			assertArrayEquals(List.of(testRole).toArray(), testDAO.query(sql, id).toArray());
 
-			testRole.setName("ADMIN");
+			testRole.setName("TEST2");
 			testDAO.update(testRole);
 			assertArrayEquals(List.of(testRole).toArray(), testDAO.query(sql, id).toArray());
 

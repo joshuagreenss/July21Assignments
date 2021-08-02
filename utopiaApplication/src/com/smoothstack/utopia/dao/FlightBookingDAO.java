@@ -15,12 +15,12 @@ public class FlightBookingDAO extends DAO<FlightBooking> {
 	}
 
 	public void insert(FlightBooking booking) throws ClassNotFoundException, SQLException {
-		this.commit("INSERT INTO flight_booking VALUES (?, ?)",
+		this.commit("INSERT INTO flight_bookings VALUES (?, ?)",
 				new Object[] { booking.getFlight(), booking.getBooking() });
 	}
 
 	public void delete(FlightBooking booking) throws ClassNotFoundException, SQLException {
-		this.commit("DELETE FROM flight_booking WHERE flight_id = ? AND booking_id = ?",
+		this.commit("DELETE FROM flight_bookings WHERE flight_id = ? AND booking_id = ?",
 				new Object[] { booking.getFlight(), booking.getBooking() });
 	}
 

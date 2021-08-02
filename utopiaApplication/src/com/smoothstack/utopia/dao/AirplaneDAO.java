@@ -24,12 +24,12 @@ public class AirplaneDAO extends DAO<Airplane> {
 	}
 
 	public void update(Airplane airplane) throws ClassNotFoundException, SQLException {
-		this.commit("UPDATE Airplane SET city = ? WHERE id = ?", new Object[] { airplane.getType(), airplane.getId() });
+		this.commit("UPDATE Airplane SET type_id = ? WHERE id = ?",
+				new Object[] { airplane.getType(), airplane.getId() });
 	}
 
 	public void delete(Airplane airplane) throws ClassNotFoundException, SQLException {
-		this.commit("DELETE FROM Airplane WHERE iata_id = ? AND city = ?",
-				new Object[] { airplane.getId(), airplane.getType() });
+		this.commit("DELETE FROM Airplane WHERE id = ?", new Object[] { airplane.getId()});
 	}
 
 	@Override
