@@ -30,7 +30,7 @@ public class AdminMenu {
 				m.mainMenu(s);
 				break;
 			case (3):
-				m = new TravelerMenu(s);
+				m = new PassengerMenu(s);
 				m.mainMenu(s);
 				break;
 			case (4):
