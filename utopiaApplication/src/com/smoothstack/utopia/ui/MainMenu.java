@@ -12,6 +12,8 @@ public class MainMenu {
 
 	public static void menu(Scanner s) {
 		int input = 0;
+		AgentMenu am = null;
+		TravelerMenu tm = null;
 		do {
 			System.out.println("Welcome to Utopia! What kind of user are you?");
 			System.out.println("1) Employee/Agent");
@@ -26,10 +28,16 @@ public class MainMenu {
 			}
 			switch (input) {
 			case (1):
-				AgentMenu.mainMenu(s);
+				if(am == null) {
+					am = new AgentMenu();
+				}
+				am.mainMenu(s);
 				break;
 			case (2):
-				TravelerMenu.mainMenu(s);
+				if(tm == null) {
+					tm = new TravelerMenu();
+				}
+				tm.mainMenu(s);
 				break;
 			case (3):
 				AdminMenu.mainMenu(s);

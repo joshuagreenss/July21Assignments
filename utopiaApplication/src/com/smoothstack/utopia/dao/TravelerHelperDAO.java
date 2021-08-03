@@ -14,9 +14,9 @@ import com.smoothstack.utopia.domain.Flight;
 import com.smoothstack.utopia.domain.Passenger;
 import com.smoothstack.utopia.domain.User;
 
-public class PassengerHelperDAO extends UserDAO {
+public class TravelerHelperDAO extends UserDAO {
 
-	public PassengerHelperDAO(Connection conn) {
+	public TravelerHelperDAO(Connection conn) {
 		super(conn);
 	}
 
