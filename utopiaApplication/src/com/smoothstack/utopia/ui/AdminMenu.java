@@ -17,7 +17,7 @@ public class AdminMenu {
 			System.out.println("8) Return to main menu");
 			try {
 				input = s.nextInt();
-			}catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println("Invalid selection");
 				input = 0;
 			}
