@@ -2,41 +2,64 @@ package com.smoothstack.utopia.services;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
-import com.smoothstack.utopia.dao.PassengerDAO;
-import com.smoothstack.utopia.domain.Passenger;
+import com.smoothstack.utopia.dao.AirportDAO;
+import com.smoothstack.utopia.domain.Airport;
 import com.smoothstack.utopia.utils.ConnectionUtil;
 
-public class PassengerServices {
-	private PassengerDAO dao;
+public class AirportServices {
+	private AirportDAO dao;
 	private Connection conn;
 
-	public PassengerServices() {
+	public AirportServices() {
 		try {
 			conn = ConnectionUtil.getConnection();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dao = new PassengerDAO(conn);
+		dao = new AirportDAO(conn);
 	}
 
-	public void insert(Integer id, int bid, String gName, String fName, LocalDate dob, String gender, String address) {
+	public void insert(String code, String city) {
 		try {
 			try {
-				Passenger p = new Passenger();
-				if (id != null) {
-					p.setId(id);
-				}
-				p.setBid(bid);
-				p.setgName(gName);
-				p.setfName(fName);
-				p.setDob(dob);
-				p.setGender(gender);
-				p.setAddress(address);
-				dao.insert(p);
+				Airport a = new Airport();
+				a.setCode(code);
+				a.setCity(city);
+				dao.insert(a);
+			} catch (ClassNotFoundException | SQLException e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(String code, String city) {
+		try {
+			try {
+				Airport a = new Airport();
+				a.setCode(code);
+				a.setCity(city);
+				dao.update(a);
+			}catch (ClassNotFoundException | SQLException e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(String code) {
+		try {
+			try {
+				Airport a = new Airport();
+				a.setCode(code);
+				dao.delete(a);
 			} catch (ClassNotFoundException | SQLException e) {
 				conn.rollback();
 				e.printStackTrace();
@@ -46,44 +69,8 @@ public class PassengerServices {
 		}
 	}
 
-	public void update(int id, int bid, String gName, String fName, LocalDate dob, String gender, String address) {
-		try {
-			try {
-				Passenger p = new Passenger();
-				p.setId(id);
-				p.setBid(bid);
-				p.setgName(gName);
-				p.setfName(fName);
-				p.setDob(dob);
-				p.setGender(gender);
-				p.setAddress(address);
-				dao.update(p);
-			} catch (ClassNotFoundException | SQLException e) {
-				conn.rollback();
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void delete(int id) {
-		try {
-			try {
-				Passenger p = new Passenger();
-				p.setId(id);
-				dao.delete(p);
-			} catch (ClassNotFoundException | SQLException e) {
-				conn.rollback();
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public List<Passenger> readAll() {
-		String sql = "SELECT * FROM Passenger";
+	public List<Airport> readAll() {
+		String sql = "SELECT * FROM Airport";
 		try {
 			try {
 				return dao.query(sql, null);

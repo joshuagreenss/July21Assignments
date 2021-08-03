@@ -123,6 +123,4 @@ public class PlaneMenu implements ObjectMenu {
 			i++;
 		}
 	}
-
-	
 }

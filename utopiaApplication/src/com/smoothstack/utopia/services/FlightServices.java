@@ -2,41 +2,40 @@ package com.smoothstack.utopia.services;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import com.smoothstack.utopia.dao.PassengerDAO;
-import com.smoothstack.utopia.domain.Passenger;
+import com.smoothstack.utopia.dao.FlightDAO;
+import com.smoothstack.utopia.domain.Flight;
 import com.smoothstack.utopia.utils.ConnectionUtil;
 
-public class PassengerServices {
-	private PassengerDAO dao;
+public class FlightServices {
+	private FlightDAO dao;
 	private Connection conn;
 
-	public PassengerServices() {
+	public FlightServices() {
 		try {
 			conn = ConnectionUtil.getConnection();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dao = new PassengerDAO(conn);
+		dao = new FlightDAO(conn);
 	}
 
-	public void insert(Integer id, int bid, String gName, String fName, LocalDate dob, String gender, String address) {
+	public void insert(Integer id, int route, int airplane, LocalDateTime departure, int reserved, float price) {
 		try {
 			try {
-				Passenger p = new Passenger();
+				Flight f = new Flight();
 				if (id != null) {
-					p.setId(id);
+					f.setId(id);
 				}
-				p.setBid(bid);
-				p.setgName(gName);
-				p.setfName(fName);
-				p.setDob(dob);
-				p.setGender(gender);
-				p.setAddress(address);
-				dao.insert(p);
+				f.setRoute(route);
+				f.setPlane(airplane);
+				f.setDeparture(departure);
+				f.setReserved(reserved);
+				f.setPrice(price);
+				dao.insert(f);
 			} catch (ClassNotFoundException | SQLException e) {
 				conn.rollback();
 				e.printStackTrace();
@@ -46,18 +45,17 @@ public class PassengerServices {
 		}
 	}
 
-	public void update(int id, int bid, String gName, String fName, LocalDate dob, String gender, String address) {
+	public void update(int id, int route, int airplane, LocalDateTime departure, int reserved, float price) {
 		try {
 			try {
-				Passenger p = new Passenger();
-				p.setId(id);
-				p.setBid(bid);
-				p.setgName(gName);
-				p.setfName(fName);
-				p.setDob(dob);
-				p.setGender(gender);
-				p.setAddress(address);
-				dao.update(p);
+				Flight f = new Flight();
+				f.setId(id);
+				f.setRoute(route);
+				f.setPlane(airplane);
+				f.setDeparture(departure);
+				f.setReserved(reserved);
+				f.setPrice(price);
+				dao.update(f);
 			} catch (ClassNotFoundException | SQLException e) {
 				conn.rollback();
 				e.printStackTrace();
@@ -70,9 +68,9 @@ public class PassengerServices {
 	public void delete(int id) {
 		try {
 			try {
-				Passenger p = new Passenger();
-				p.setId(id);
-				dao.delete(p);
+				Flight f = new Flight();
+				f.setId(id);
+				dao.delete(f);
 			} catch (ClassNotFoundException | SQLException e) {
 				conn.rollback();
 				e.printStackTrace();
@@ -82,8 +80,8 @@ public class PassengerServices {
 		}
 	}
 
-	public List<Passenger> readAll() {
-		String sql = "SELECT * FROM Passenger";
+	public List<Flight> readAll() {
+		String sql = "SELECT * FROM Flight";
 		try {
 			try {
 				return dao.query(sql, null);

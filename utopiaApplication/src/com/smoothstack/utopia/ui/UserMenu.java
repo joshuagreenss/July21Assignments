@@ -1,80 +1,108 @@
 package com.smoothstack.utopia.ui;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.smoothstack.utopia.dao.UserDAO;
 import com.smoothstack.utopia.domain.User;
+import com.smoothstack.utopia.services.UserServices;
 
 public class UserMenu implements ObjectMenu {
 	private Scanner s;
+	private UserServices service;
 
 	public UserMenu(Scanner s) {
 		this.s = s;
+		service = new UserServices();
 	}
 
 	@Override
-	public void add(Connection conn) throws ClassNotFoundException, SQLException {
-		User u = new User();
-		String newVal;
+	public void mainMenu(Scanner s) {
+		int input = 0;
+		do {
+			System.out.println("1) Add");
+			System.out.println("2) Update");
+			System.out.println("3) Delete");
+			System.out.println("4) Read");
+			System.out.println("5) Return");
+			try {
+				input = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input");
+				input = 0;
+			}
+			switch (input) {
+			case (1):
+				add();
+				break;
+			case (2):
+				update();
+				break;
+			case (3):
+				delete();
+				break;
+			case (4):
+				read();
+				break;
+			case (5):
+				break;
+			default:
+				System.out.println("Invalid input");
+			}
+		} while (input != 5);
+		service.commit();
+		service.close();
+	}
+
+	@Override
+	public void add() {
+		int role;
+		String gName;
+		String fName;
+		String username;
+		String email;
+		String password;
+		String phone;
 		System.out.println("Enter new value");
 
 		System.out.println("Role: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setRole(Integer.valueOf(newVal));
-		}
+		role = Integer.valueOf(s.next());
 
 		System.out.println("Given Name: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setgName(newVal);
-		}
+		gName = s.next();
 
 		System.out.println("Family Name: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setfName(newVal);
-		}
+		fName = s.next();
 
 		System.out.println("Username: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setUsername(newVal);
-		}
+		username = s.next();
 
 		System.out.println("Email: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setEmail(newVal);
-		}
+		email = s.next();
 
 		System.out.println("Password: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setPassword(newVal);
-		}
+		password = s.next();
 
 		System.out.println("Phone: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			u.setPhone(newVal);
-		}
+		phone = s.next();
 
-		UserDAO dao = new UserDAO(conn);
-		dao.insert(u);
+		service.insert(null, role, gName, fName, username, email, password, phone);
 	}
 
 	@Override
-	public void update(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM User";
+	public void update() {
 		String newVal;
 		int i = 1;
 		int input = 0;
-		UserDAO dao = new UserDAO(conn);
-		List<User> us = dao.query(sql, null);
+		int id;
+		int role;
+		String gName;
+		String fName;
+		String username;
+		String email;
+		String password;
+		String phone;
+
+		List<User> us = service.readAll();
 		for (User u : us) {
 			System.out.println(i + ") id: " + u.getId() + " Role: " + u.getRole() + " Given Name: " + u.getgName()
 					+ " Family Name: " + u.getfName() + " Username: " + u.getUsername() + " Email: " + u.getEmail()
@@ -83,64 +111,65 @@ public class UserMenu implements ObjectMenu {
 		}
 		try {
 			input = s.nextInt();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Invalid selection");
-			input = 0;
+			return;
 		}
 		System.out.println("Enter new value or N/A");
+		id = us.get(input - 1).getId();
 
 		System.out.println("Role: ");
 		newVal = s.next();
 		if (!newVal.equals("N/A")) {
-			us.get(input-1).setRole(Integer.valueOf(newVal));
+			role = Integer.valueOf(newVal);
+		} else {
+			role = us.get(input - 1).getRole();
 		}
 
 		System.out.println("Given Name: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setgName(newVal);
+		gName = s.next();
+		if (gName.equals("N/A")) {
+			gName = us.get(input - 1).getgName();
 		}
 
 		System.out.println("Family Name: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setfName(newVal);
+		fName = s.next();
+		if (fName.equals("N/A")) {
+			fName = us.get(input - 1).getfName();
 		}
 
 		System.out.println("Username: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setUsername(newVal);
+		username = s.next();
+		if (username.equals("N/A")) {
+			username = us.get(input - 1).getUsername();
 		}
 
 		System.out.println("Email: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setEmail(newVal);
+		email = s.next();
+		if (email.equals("N/A")) {
+			email = us.get(input - 1).getEmail();
 		}
 
 		System.out.println("Password: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setPassword(newVal);
+		password = s.next();
+		if (password.equals("N/A")) {
+			password = us.get(input - 1).getPassword();
 		}
 
 		System.out.println("Phone: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			us.get(input-1).setPhone(newVal);
+		phone = s.next();
+		if (phone.equals("N/A")) {
+			phone = us.get(input - 1).getPhone();
 		}
 
-		dao.insert(us.get(input-1));
+		service.update(id, role, gName, fName, username, email, password, phone);
 	}
 
 	@Override
-	public void delete(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM User";
+	public void delete() {
 		int i = 1;
 		int input = 0;
-		UserDAO dao = new UserDAO(conn);
-		List<User> us = dao.query(sql, null);
+		List<User> us = service.readAll();
 		for (User u : us) {
 			System.out.println(i + ") id: " + u.getId() + " Role: " + u.getRole() + " Given Name: " + u.getgName()
 					+ " Family Name: " + u.getfName() + " Username: " + u.getUsername() + " Email: " + u.getEmail()
@@ -149,21 +178,19 @@ public class UserMenu implements ObjectMenu {
 		}
 		try {
 			input = s.nextInt();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Invalid selection");
 			input = 0;
 		}
 		if (input > 0 && input <= us.size()) {
-			dao.delete(us.get(input - 1));
+			service.delete(us.get(input - 1).getId());
 		}
 	}
 
 	@Override
-	public void read(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM User";
+	public void read() {
 		int i = 1;
-		UserDAO dao = new UserDAO(conn);
-		List<User> us = dao.query(sql, null);
+		List<User> us = service.readAll();
 		for (User u : us) {
 			System.out.println(i + ") id: " + u.getId() + " Role: " + u.getRole() + " Given Name: " + u.getgName()
 					+ " Family Name: " + u.getfName() + " Username: " + u.getUsername() + " Email: " + u.getEmail()

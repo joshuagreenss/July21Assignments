@@ -1,49 +1,81 @@
 package com.smoothstack.utopia.ui;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.smoothstack.utopia.dao.RouteDAO;
 import com.smoothstack.utopia.domain.Route;
+import com.smoothstack.utopia.services.RouteServices;
 
 public class RouteMenu implements ObjectMenu {
 	private Scanner s;
+	private RouteServices service;
 
 	public RouteMenu(Scanner s) {
 		this.s = s;
+		this.service = new RouteServices();
 	}
 
 	@Override
-	public void add(Connection conn) throws ClassNotFoundException, SQLException {
-		Route r = new Route();
-		String newVal;
+	public void mainMenu(Scanner s) {
+		int input = 0;
+		do {
+			System.out.println("1) Add");
+			System.out.println("2) Update");
+			System.out.println("3) Delete");
+			System.out.println("4) Read");
+			System.out.println("5) Return");
+			try {
+				input = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input");
+				input = 0;
+			}
+			switch (input) {
+			case (1):
+				add();
+				break;
+			case (2):
+				update();
+				break;
+			case (3):
+				delete();
+				break;
+			case (4):
+				read();
+				break;
+			case (5):
+				break;
+			default:
+				System.out.println("Invalid input");
+			}
+		} while (input != 5);
+		service.commit();
+		service.close();
+	}
+
+	@Override
+	public void add() {
+		String orig;
+		String dest;
 		System.out.println("Enter new value");
 
 		System.out.println("Origin Code: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			r.setOrig(newVal);
-		}
+		orig = s.next();
 
 		System.out.println("Destination Code: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			r.setDest(newVal);
-		}
-		RouteDAO dao = new RouteDAO(conn);
-		dao.insert(r);
+		dest = s.next();
+		
+		service.insert(null,orig,dest);
 	}
 
 	@Override
-	public void update(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Route";
-		String newVal;
+	public void update(){
 		int i = 1;
+		int id;
 		int input = 0;
-		RouteDAO dao = new RouteDAO(conn);
-		List<Route> rs = dao.query(sql, null);
+		String orig;
+		String dest;
+		List<Route> rs = service.readAll();
 		for (Route r : rs) {
 			System.out.println(i + ") Origin: " + r.getOrig() + " Destination: " + r.getDest());
 			i++;
@@ -55,31 +87,30 @@ public class RouteMenu implements ObjectMenu {
 			input = 0;
 		}
 		if (input > 0 && input <= rs.size()) {
+			id = rs.get(input-1).getId();
 			System.out.println("Enter new value or N/A");
 
 			System.out.println("Origin: ");
-			newVal = s.next();
-			if (!newVal.equals("N/A")) {
-				rs.get(input - 1).setOrig(newVal);
+			orig = s.next();
+			if (orig.equals("N/A")) {
+				orig = rs.get(input-1).getOrig();
 			}
 
 			System.out.println("Destination: ");
-			newVal = s.next();
-			if (!newVal.equals("N/A")) {
-				rs.get(input - 1).setDest(newVal);
+			dest = s.next();
+			if (dest.equals("N/A")) {
+				dest = rs.get(input - 1).getDest();
 			}
-
-			dao.update(rs.get(input - 1));
+			
+			service.update(id, orig, dest);
 		}
 	}
 
 	@Override
-	public void delete(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Route";
+	public void delete(){
 		int i = 1;
 		int input = 0;
-		RouteDAO dao = new RouteDAO(conn);
-		List<Route> rs = dao.query(sql, null);
+		List<Route> rs = service.readAll();
 		for (Route r : rs) {
 			System.out.println(i + ") Origin: " + r.getOrig() + " Destination: " + r.getDest());
 			i++;
@@ -91,16 +122,14 @@ public class RouteMenu implements ObjectMenu {
 			input = 0;
 		}
 		if (input > 0 && input <= rs.size()) {
-			dao.delete(rs.get(input - 1));
+			service.delete(rs.get(input - 1).getId());
 		}
 	}
 
 	@Override
-	public void read(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Route";
+	public void read(){
 		int i = 1;
-		RouteDAO dao = new RouteDAO(conn);
-		List<Route> rs = dao.query(sql, null);
+		List<Route> rs = service.readAll();
 		for (Route r : rs) {
 			System.out.println(i + ") Origin: " + r.getOrig() + " Dest: " + r.getDest());
 			i++;
