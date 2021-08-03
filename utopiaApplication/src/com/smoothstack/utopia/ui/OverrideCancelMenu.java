@@ -1,52 +1,38 @@
 package com.smoothstack.utopia.ui;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.smoothstack.utopia.dao.BookingDAO;
 import com.smoothstack.utopia.domain.Booking;
-import com.smoothstack.utopia.utils.ConnectionUtil;
+import com.smoothstack.utopia.services.BookingServices;
 
 public class OverrideCancelMenu {
 	public static void mainMenu(Scanner s) {
+		BookingServices service = new BookingServices();
 		int input = 0;
 		int i = 0;
-		String sql = "SELECT * FROM Booking WHERE is_active = 0";
 		List<Booking> bs;
-		try (Connection conn = ConnectionUtil.getConnection()) {
-			try {
-				i = 1;
-				BookingDAO dao = new BookingDAO(conn);
-				do {
-					bs = dao.query(sql, null);
-					i = 1;
-					for (Booking b : bs) {
-						System.out.println(i + ") id: " + b.getId() + " Active: " + b.getActive()
-								+ " Confirmation Code: " + b.getCode());
-						i++;
-					}
-					System.out.println(i + ") Return to Previous Menu");
-					try {
-						input = s.nextInt();
-					} catch (Exception e) {
-						System.out.println("Invalid input");
-						input = 0;
-					}
-					if (input > 0 && input < bs.size() + 1) {
-						bs.get(input - 1).setActive(1);
-						dao.update(bs.get(input - 1));
-					}
-				} while (input != bs.size() + 1);
-				conn.commit();
-			} catch (SQLException | ClassNotFoundException e) {
-
-			} finally {
-				conn.rollback();
+		i = 1;
+		do {
+			bs = service.readAll();
+			i = 1;
+			for (Booking b : bs) {
+				System.out.println(
+						i + ") id: " + b.getId() + " Active: " + b.getActive() + " Confirmation Code: " + b.getCode());
+				i++;
 			}
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+			System.out.println(i + ") Return to Previous Menu");
+			try {
+				input = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input");
+				input = 0;
+			}
+			if (input > 0 && input < bs.size() + 1) {
+				service.update(bs.get(input - 1).getId(), 1, bs.get(input - 1).getCode());
+			}
+		} while (input != bs.size() + 1);
+		service.commit();
+		service.close();
 	}
 }
