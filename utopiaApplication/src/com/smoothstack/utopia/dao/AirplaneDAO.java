@@ -19,7 +19,7 @@ public class AirplaneDAO extends DAO<Airplane> {
 		if (airplane.getId() != null) {
 			this.commit("INSERT INTO Airplane VALUES (?, ?)", new Object[] { airplane.getId(), airplane.getType() });
 		} else {
-			this.commit("INSERT INTO Airplane (type) VALUES(?)", new Object[] { airplane.getType() });
+			this.commit("INSERT INTO Airplane (type_id) VALUES(?)", new Object[] { airplane.getType() });
 		}
 	}
 

@@ -1,66 +1,80 @@
 package com.smoothstack.utopia.ui;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.smoothstack.utopia.dao.AirplaneDAO;
-import com.smoothstack.utopia.dao.AirportDAO;
 import com.smoothstack.utopia.domain.Airplane;
-import com.smoothstack.utopia.domain.Airport;
+import com.smoothstack.utopia.services.AirplaneServices;
 
 public class PlaneMenu implements ObjectMenu {
 	private Scanner s;
+	private AirplaneServices service;
+
 	public PlaneMenu(Scanner s) {
 		this.s = s;
+		this.service = new AirplaneServices();
 	}
-
+	
 	@Override
-	public void add(Connection conn) throws ClassNotFoundException, SQLException {
-		Airplane a = new Airplane();
-		String newVal;
+	public void mainMenu(Scanner s) {
+		int input = 0;
+		do {
+			System.out.println("1) Add");
+			System.out.println("2) Update");
+			System.out.println("3) Delete");
+			System.out.println("4) Read");
+			System.out.println("5) Return");
+			try {
+				input = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input");
+				input = 0;
+			}
+			switch (input) {
+			case (1):
+				add();
+				break;
+			case (2):
+				update();
+				break;
+			case (3):
+				delete();
+				break;
+			case (4):
+				read();
+				break;
+			case (5):
+				break;
+			default:
+				System.out.println("Invalid input");
+			}
+		} while (input != 5);
+		service.commit();
+		service.close();
+	}
+	
+	@Override
+	public void add() {
+		int input;
 		System.out.println("Enter new value");
 
 		System.out.println("Type: ");
-		newVal = s.next();
-		if (newVal.length() > 0) {
-			a.setType(Integer.valueOf(newVal));
+		try {
+			input = s.nextInt();
+		} catch (Exception e) {
+			System.out.println("Invalid input");
+			input = 0;
 		}
-
-		AirplaneDAO dao = new AirplaneDAO(conn);
-		dao.insert(a);
+		service.insert(null, input);
 	}
 
 	@Override
-	public void update(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Airplane";
+	public void update() {
 		String newVal;
 		int i = 1;
-		AirplaneDAO dao = new AirplaneDAO(conn);
-		List<Airplane> as = dao.query(sql, null);
-		for (Airplane a : as) {
-			System.out.println(i + ") id: " + a.getId() + " type: " + a.getType());
-			i++;
-		}
-		int input = s.nextInt();
-		System.out.println("Enter new value or N/A");
-
-		System.out.println("Type: ");
-		newVal = s.next();
-		if (!newVal.equals("N/A")) {
-			as.get(input - 1).setType(Integer.valueOf(newVal));
-		}
-		dao.update(as.get(input - 1));
-	}
-
-	@Override
-	public void delete(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Airplane";
-		int i = 1;
 		int input = 0;
-		AirplaneDAO dao = new AirplaneDAO(conn);
-		List<Airplane> as = dao.query(sql, null);
+
+		List<Airplane> as = service.readAll();
 		for (Airplane a : as) {
 			System.out.println(i + ") id: " + a.getId() + " type: " + a.getType());
 			i++;
@@ -68,23 +82,47 @@ public class PlaneMenu implements ObjectMenu {
 		try {
 			input = s.nextInt();
 		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+			System.out.println("Invalid input");
+			input = 0;
 		}
-		if (input > 0 && input <= as.size()) {
-			dao.delete(as.get(input - 1));
+		System.out.println("Enter new value or N/A");
+
+		System.out.println("Type: ");
+		newVal = s.next();
+		if (!newVal.equals("N/A")) {
+			service.update(as.get(input - 1).getId(), Integer.valueOf(newVal));
 		}
 	}
 
 	@Override
-	public void read(Connection conn) throws ClassNotFoundException, SQLException {
-		String sql = "SELECT * FROM Airplane";
+	public void delete() {
 		int i = 1;
-		AirportDAO dao = new AirportDAO(conn);
-		List<Airport> as = dao.query(sql, null);
-		for (Airport a : as) {
-			System.out.println(i + ") id: " + a.getCode() + " city: " + a.getCity());
+		int input = 0;
+		List<Airplane> as = service.readAll();
+		for (Airplane a : as) {
+			System.out.println(i + ") id: " + a.getId() + " type: " + a.getType());
+			i++;
+		}
+		try {
+			input = s.nextInt();
+		} catch (Exception e) {
+			System.out.println("Invalid input");
+			input = 0;
+		}
+		if (input > 0 && input <= as.size()) {
+			service.delete(as.get(input - 1).getId());
+		}
+	}
+
+	@Override
+	public void read() {
+		int i = 1;
+		List<Airplane> as = service.readAll();
+		for (Airplane a : as) {
+			System.out.println(i + ") id: " + a.getId() + " type: " + a.getType());
 			i++;
 		}
 	}
 
+	
 }

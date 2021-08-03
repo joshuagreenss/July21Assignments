@@ -13,12 +13,12 @@ import com.smoothstack.utopia.utils.ConnectionUtil;
 
 public class AgentMenu {
 	public static void mainMenu(Scanner s) {
-		int choice = 0;
-		while (choice != 2) {
+		int input = 0;
+		while (input != 2) {
 			System.out.println("1) Enter flights you manage");
 			System.out.println("2) Quit to main");
-			choice = s.nextInt();
-			switch (choice) {
+			input = s.nextInt();
+			switch (input) {
 			case (1):
 				flightSelectMenu(s);
 				break;
@@ -32,7 +32,7 @@ public class AgentMenu {
 
 	private static void flightSelectMenu(Scanner s) {
 		int i = 1;
-		int choice = 0;
+		int input = 0;
 		try (Connection conn = ConnectionUtil.getConnection();) {
 			List<List<Object>> frs = new ArrayList<>();
 			List<Flight> selections;
@@ -42,7 +42,7 @@ public class AgentMenu {
 			try {
 				AgentHelperDAO dao = new AgentHelperDAO(conn);
 				frs = dao.getFlightRoutes();
-				while (choice != frs.size() + 1) {
+				while (input != frs.size() + 1) {
 					i = 1;
 					for (List<Object> fs : frs) {
 						System.out.println(
@@ -50,15 +50,20 @@ public class AgentMenu {
 						i++;
 					}
 					System.out.println(i + ") Return to previous menu");
-					choice = s.nextInt();
-					if (choice > frs.size() + 1) {
+					try {
+						input = s.nextInt();
+					} catch (Exception e) {
+						System.out.println("Invalid selection");
+						input = 0;
+					}
+					if (input > frs.size() + 1) {
 						System.out.println("Sorry, that's not a valid option");
-					} else if (choice == frs.size() + 1) {
+					} else if (input == frs.size() + 1) {
 						return;
 					} else {
-						orig = frs.get(choice - 1).get(0).toString();
-						dest = frs.get(choice - 1).get(2).toString();
-						cap = Integer.valueOf(frs.get(choice - 1).get(4).toString());
+						orig = frs.get(input - 1).get(0).toString();
+						dest = frs.get(input - 1).get(2).toString();
+						cap = Integer.valueOf(frs.get(input - 1).get(4).toString());
 						selections = dao.getSelection(orig, dest);
 						if (selections.size() != 0) {
 							flightOptionMenu(s, selections.get(0), orig, dest, cap, dao);
@@ -71,7 +76,7 @@ public class AgentMenu {
 				e.printStackTrace();
 				System.out.println("Encountered an error, rolling back");
 				conn.rollback();
-			}finally {
+			} finally {
 				conn.commit();
 			}
 		} catch (SQLException | ClassNotFoundException e) {
@@ -81,14 +86,19 @@ public class AgentMenu {
 
 	private static void flightOptionMenu(Scanner s, Flight f, String orig, String dest, int maxSeats,
 			AgentHelperDAO dao) throws ClassNotFoundException, SQLException {
-		int choice = 0;
-		while (choice != 4) {
+		int input = 0;
+		while (input != 4) {
 			System.out.println("1) View more details");
 			System.out.println("2) Update details");
 			System.out.println("3) Add Seats");
 			System.out.println("4) Return to previous menu");
-			choice = s.nextInt();
-			switch (choice) {
+			try {
+				input = s.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid selection");
+				input = 0;
+			}
+			switch (input) {
 			case (1):
 				System.out.println("Flight ID: " + f.getId());
 				System.out.println("Plane ID: " + f.getPlane());
@@ -116,42 +126,40 @@ public class AgentMenu {
 		}
 	}
 
-	private static void updateFlight(Scanner s, Flight f, AgentHelperDAO dao) throws ClassNotFoundException, SQLException {
+	private static void updateFlight(Scanner s, Flight f, AgentHelperDAO dao)
+			throws ClassNotFoundException, SQLException {
 		System.out.println("Enter quit at any prompt to cancel");
 		String input;
 		System.out.println("Enter new departure time (yyyy-mm-dd hh:mm:ss) or N/A for no change");
 		input = s.next();
-		if(input.equals("quit")){
+		if (input.equals("quit")) {
 			return;
-		}
-		else if(!input.equals("N/A")){
+		} else if (!input.equals("N/A")) {
 			try {
 				f.setDeparture(LocalDateTime.parse(input));
-			}catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println("Invalid format");
 			}
 		}
 		System.out.println("Enter new number of reserved seats or N/A for no change");
 		input = s.next();
-		if(input.equals("quit")) {
+		if (input.equals("quit")) {
 			return;
-		}
-		else if(!input.equals("N/A")) {
+		} else if (!input.equals("N/A")) {
 			try {
-			f.setReserved(Integer.valueOf(input));
-			} catch(Exception e) {
+				f.setReserved(Integer.valueOf(input));
+			} catch (Exception e) {
 				System.out.println("Invalid format");
 			}
 		}
 		System.out.println("Enter new seat price or N/A for no change");
 		input = s.next();
-		if(input.equals("quit")) {
+		if (input.equals("quit")) {
 			return;
-		}
-		else if(!input.equals("N/A")) {
+		} else if (!input.equals("N/A")) {
 			try {
 				f.setPrice(Float.valueOf(input));
-			} catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println("Invalid format");
 			}
 		}

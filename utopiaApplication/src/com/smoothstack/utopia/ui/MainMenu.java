@@ -11,20 +11,20 @@ public class MainMenu {
 	}
 
 	public static void menu(Scanner s) {
-		int choice = 0;
-		while (choice != 4) {
+		int input = 0;
+		do {
 			System.out.println("Welcome to Utopia! What kind of user are you?");
 			System.out.println("1) Employee/Agent");
 			System.out.println("2) Traveler");
 			System.out.println("3) Administrator");
 			System.out.println("4) Quit");
 			try {
-				choice = s.nextInt();
+				input = s.nextInt();
 			} catch (Exception e) {
-				System.out.println("Invalid input");
-				s.reset();
+				System.out.println("Invalid selection");
+				input = 0;
 			}
-			switch (choice) {
+			switch (input) {
 			case (1):
 				AgentMenu.mainMenu(s);
 				break;
@@ -40,6 +40,6 @@ public class MainMenu {
 			default:
 				System.out.println("I'm sorry, that's not a valid input");
 			}
-		}
+		} while (input != 4);
 	}
 }

@@ -20,7 +20,7 @@ public class TravelerMenu {
 
 	public static void mainMenu(Scanner s) {
 		int choice = 0;
-		while (choice != 3) {
+		do {
 			System.out.println("1) Login");
 			System.out.println("2) Guest");
 			System.out.println("3) Quit");
@@ -37,7 +37,7 @@ public class TravelerMenu {
 			default:
 				System.out.println("Sorry, that's not a valid choice");
 			}
-		}
+		} while (choice != 3);
 	}
 
 	private static void loginMenu(Scanner s) {
@@ -49,7 +49,7 @@ public class TravelerMenu {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			try {
 				PassengerHelperDAO dao = new PassengerHelperDAO(conn);
-				while (!input.equals("N")) {
+				do {
 					System.out.println("Username:");
 					username = s.next();
 					System.out.println("Password:");
@@ -64,7 +64,7 @@ public class TravelerMenu {
 						System.out.println("Login failed. Try again? (Y/N)");
 						input = s.next();
 					}
-				}
+				} while (!input.equals("N"));
 				conn.commit();
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
@@ -79,7 +79,7 @@ public class TravelerMenu {
 	private static void loginSuccess(Scanner s, User user, PassengerHelperDAO dao)
 			throws SQLException, ClassNotFoundException {
 		int input = 0;
-		while (input != 3) {
+		do {
 			System.out.println("1) Book a flight");
 			System.out.println("2) Cancel a flight");
 			System.out.println("3) Quit to previous");
@@ -87,6 +87,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
@@ -100,7 +101,7 @@ public class TravelerMenu {
 			default:
 				System.out.println("Sorry, that's not a valid response");
 			}
-		}
+		}while (input != 3);
 	}
 
 	private static void userBook(Scanner s, User user, PassengerHelperDAO dao)
@@ -124,6 +125,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			if (input > flights.size() + 1) {
 				System.out.println("Sorry, that's not a valid response");
@@ -144,7 +146,7 @@ public class TravelerMenu {
 			return;
 		}
 		int input = 0;
-		while (input != 3) {
+		do {
 			System.out.println("1) View Flight Details");
 			System.out.println("2) Confirm Booking");
 			System.out.println("3) Return to Previous Menu");
@@ -152,6 +154,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
@@ -177,13 +180,13 @@ public class TravelerMenu {
 				p.setGender(s.next());
 				System.out.println("Address of Passenger:");
 				p.setAddress(s.next());
-				flight.setReserved(flight.getReserved()+1);
+				flight.setReserved(flight.getReserved() + 1);
 				dao.insertUserBooking(bu, b, p, flight);
 				break;
 			case (3):
 				break;
 			}
-		}
+		}while (input != 3);
 	}
 
 	private static void userCancel(Scanner s, User user, PassengerHelperDAO dao)
@@ -204,6 +207,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			if (input <= fbs.size()) {
 				cancelConfirm(s, user, fbs.get(input - 1).get(2).toString(), fbs.get(input - 1).get(3).toString(), dao,
@@ -223,6 +227,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
@@ -291,6 +296,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
@@ -328,6 +334,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			if (input > fs.size() + 1) {
 				System.out.println("Sorry, that's not a valid input");
@@ -348,7 +355,7 @@ public class TravelerMenu {
 			System.out.println("Sorry, this flight is fully booked");
 		}
 		int input = 0;
-		while (input != 3) {
+		do {
 			System.out.println("1) List Flight Details");
 			System.out.println("2) Confirm Booking");
 			System.out.println("3) Return to Previous Menu");
@@ -356,6 +363,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
@@ -381,7 +389,7 @@ public class TravelerMenu {
 				p.setAddress(s.next());
 
 				f.setReserved(f.getReserved() + 1);
-				phdao.insertGuestBooking(bg,b,p,f);
+				phdao.insertGuestBooking(bg, b, p, f);
 				input = 3;
 				break;
 			case (3):
@@ -389,10 +397,11 @@ public class TravelerMenu {
 			default:
 				System.out.println("Sorry, that's not a valid input");
 			}
-		}
+		}while (input != 3);
 	}
 
-	private static void guestCancel(Scanner s, Connection conn, BookingGuest bg) throws SQLException, ClassNotFoundException {
+	private static void guestCancel(Scanner s, Connection conn, BookingGuest bg)
+			throws SQLException, ClassNotFoundException {
 		PassengerHelperDAO dao = new PassengerHelperDAO(conn);
 		List<List<Object>> fbs;
 		int input = 0;
@@ -410,14 +419,15 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			if (input <= fbs.size()) {
-				guestCancelConfirm(s, bg, fbs.get(input - 1).get(2).toString(), fbs.get(input - 1).get(3).toString(), dao,
-						(Flight) fbs.get(input - 1).get(0), (Integer) fbs.get(input - 1).get(1));
+				guestCancelConfirm(s, bg, fbs.get(input - 1).get(2).toString(), fbs.get(input - 1).get(3).toString(),
+						dao, (Flight) fbs.get(input - 1).get(0), (Integer) fbs.get(input - 1).get(1));
 			}
 		} while (input != fbs.size() + 1);
 	}
-	
+
 	private static void guestCancelConfirm(Scanner s, BookingGuest bg, String orig, String dest, PassengerHelperDAO dao,
 			Flight flight, int bid) throws ClassNotFoundException, SQLException {
 		int input = 0;
@@ -429,6 +439,7 @@ public class TravelerMenu {
 				input = s.nextInt();
 			} catch (Exception e) {
 				System.out.println("Invalid input");
+				input = 0;
 			}
 			switch (input) {
 			case (1):

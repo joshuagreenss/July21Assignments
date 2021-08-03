@@ -60,6 +60,7 @@ public class FlightMenu implements ObjectMenu {
 		String sql = "SELECT * FROM Flight";
 		String newVal;
 		int i = 1;
+		int input = 0;
 		FlightDAO dao = new FlightDAO(conn);
 		List<Flight> fs = dao.query(sql, null);
 		for (Flight f : fs) {
@@ -67,7 +68,12 @@ public class FlightMenu implements ObjectMenu {
 					+ " departure: " + f.getDeparture() + " reserved: " + f.getReserved() + " price: " + f.getPrice());
 			i++;
 		}
-		int input = s.nextInt();
+		try {
+			input = s.nextInt();
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
+		}
 		System.out.println("Enter new value or N/A");
 
 		System.out.println("Route: ");
@@ -116,8 +122,9 @@ public class FlightMenu implements ObjectMenu {
 		}
 		try {
 			input = s.nextInt();
-		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
 		}
 		if (input > 0 && input <= fs.size()) {
 			dao.delete(fs.get(input - 1));

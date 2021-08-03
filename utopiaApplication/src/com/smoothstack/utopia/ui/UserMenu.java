@@ -72,6 +72,7 @@ public class UserMenu implements ObjectMenu {
 		String sql = "SELECT * FROM User";
 		String newVal;
 		int i = 1;
+		int input = 0;
 		UserDAO dao = new UserDAO(conn);
 		List<User> us = dao.query(sql, null);
 		for (User u : us) {
@@ -80,7 +81,12 @@ public class UserMenu implements ObjectMenu {
 					+ " Password: " + u.getPassword() + " Phone: " + u.getPhone());
 			i++;
 		}
-		int input = s.nextInt();
+		try {
+			input = s.nextInt();
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
+		}
 		System.out.println("Enter new value or N/A");
 
 		System.out.println("Role: ");
@@ -143,8 +149,9 @@ public class UserMenu implements ObjectMenu {
 		}
 		try {
 			input = s.nextInt();
-		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
 		}
 		if (input > 0 && input <= us.size()) {
 			dao.delete(us.get(input - 1));

@@ -11,7 +11,7 @@ import com.smoothstack.utopia.utils.ConnectionUtil;
 
 public class OverrideCancelMenu {
 	public static void mainMenu(Scanner s) {
-		int choice = 0;
+		int input = 0;
 		int i = 0;
 		String sql = "SELECT * FROM Booking WHERE is_active = 0";
 		List<Booking> bs;
@@ -29,15 +29,16 @@ public class OverrideCancelMenu {
 					}
 					System.out.println(i + ") Return to Previous Menu");
 					try {
-						choice = s.nextInt();
+						input = s.nextInt();
 					} catch (Exception e) {
 						System.out.println("Invalid input");
+						input = 0;
 					}
-					if (choice > 0 && choice < bs.size() + 1) {
-						bs.get(choice - 1).setActive(1);
-						dao.update(bs.get(choice - 1));
+					if (input > 0 && input < bs.size() + 1) {
+						bs.get(input - 1).setActive(1);
+						dao.update(bs.get(input - 1));
 					}
-				} while (choice != bs.size() + 1);
+				} while (input != bs.size() + 1);
 				conn.commit();
 			} catch (SQLException | ClassNotFoundException e) {
 

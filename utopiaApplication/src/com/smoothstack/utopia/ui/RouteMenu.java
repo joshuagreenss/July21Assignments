@@ -51,7 +51,8 @@ public class RouteMenu implements ObjectMenu {
 		try {
 			input = s.nextInt();
 		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+			System.out.println("Invalid input");
+			input = 0;
 		}
 		if (input > 0 && input <= rs.size()) {
 			System.out.println("Enter new value or N/A");
@@ -86,7 +87,8 @@ public class RouteMenu implements ObjectMenu {
 		try {
 			input = s.nextInt();
 		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+			System.out.println("Invalid input");
+			input = 0;
 		}
 		if (input > 0 && input <= rs.size()) {
 			dao.delete(rs.get(input - 1));

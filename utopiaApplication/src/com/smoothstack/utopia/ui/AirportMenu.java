@@ -47,7 +47,13 @@ public class AirportMenu implements ObjectMenu {
 			System.out.println(i + ") id: " + a.getCode() + " city: " + a.getCity());
 			i++;
 		}
-		int input = s.nextInt();
+		int input = 0;
+		try {
+			input = s.nextInt();
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
+		}
 		System.out.println("Enter new value or N/A");
 
 		System.out.println("City: ");
@@ -71,8 +77,9 @@ public class AirportMenu implements ObjectMenu {
 		}
 		try {
 			input = s.nextInt();
-		} catch (Exception e) {
-			System.out.println("Invalid Selection");
+		}catch(Exception e) {
+			System.out.println("Invalid selection");
+			input = 0;
 		}
 		if (input > 0 && input <= as.size()) {
 			dao.delete(as.get(input - 1));

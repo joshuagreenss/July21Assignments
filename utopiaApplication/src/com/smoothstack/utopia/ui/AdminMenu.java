@@ -16,9 +16,10 @@ public class AdminMenu {
 			System.out.println("7) Override Cancellation");
 			System.out.println("8) Return to main menu");
 			try {
-			input = s.nextInt();
+				input = s.nextInt();
 			}catch(Exception e) {
-				System.out.println("Invalid input");
+				System.out.println("Invalid selection");
+				input = 0;
 			}
 			switch (input) {
 			case (1):
